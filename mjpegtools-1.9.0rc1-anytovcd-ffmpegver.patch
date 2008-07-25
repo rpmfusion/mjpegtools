@@ -1,0 +1,11 @@
+--- mjpegtools-1.9.0rc1/scripts/anytovcd.sh~	2006-02-16 19:58:24.000000000 +0200
++++ mjpegtools-1.9.0rc1/scripts/anytovcd.sh	2007-02-24 22:28:52.000000000 +0200
+@@ -206,7 +206,7 @@
+ 
+ fi
+ 
+-FFMPEG_VERSION="`${FFMPEG} 2>&1 | awk '$4 == "build" {print $5}' | sed s/,// | head -1`"
++FFMPEG_VERSION="`${FFMPEG} -version 2>&1 | awk '$1 == "ffmpeg" {print $2}' | sed s/SVN-r// | head -n 1`"
+ 
+ AUD_TRACK="`range_check ${AUD_TRACK} 1 99`"
+ FFMPEG_AUD_TRACK="`${FFMPEG} -i \"${AUDIO_SRC}\" 2>&1 | awk '/Audio:/ {sub("^#","",$2); print $2}' | awk -F[ '{print $1}' | head -${AUD_TRACK} | tail -1`"
