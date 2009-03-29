@@ -1,6 +1,6 @@
 Name:           mjpegtools
 Version:        1.9.0
-Release:        0.6.rc3%{?dist}
+Release:        0.7.rc3%{?dist}
 Summary:        Tools to manipulate MPEG data
 
 Group:          Applications/Multimedia
@@ -151,6 +151,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.9.0-0.7.rc3
+- rebuild for new F11 features
+
 * Fri Jul 25 2008 Hans de Goede <j.w.r.degoede@hhs.nl> 1.9.0-0.6.rc3
 - Release bump for rpmfusion
 - Sync with freshrpms (no changes)
