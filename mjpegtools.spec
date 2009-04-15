@@ -1,14 +1,14 @@
 Name:           mjpegtools
 Version:        1.9.0
-Release:        0.7.rc3%{?dist}
+Release:        1%{?dist}
 Summary:        Tools to manipulate MPEG data
 
 Group:          Applications/Multimedia
 License:        GPLv2
 URL:            http://mjpeg.sourceforge.net/
-Source0:        http://downloads.sourceforge.net/mjpeg/%{name}-%{version}rc3.tar.gz
+Source0:        http://downloads.sourceforge.net/mjpeg/%{name}-%{version}.tar.gz
 Patch0:         %{name}-1.9.0rc1-anytovcd-ffmpegver.patch
-Patch1:         http://sources.gentoo.org/viewcvs.py/*checkout*/gentoo-x86/media-video/mjpegtools/files/mjpegtools-1.9.0_rc3-gcc43.patch
+Patch1:         mjpegtools-1.9.0-gcc44.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  libjpeg-devel
@@ -71,8 +71,7 @@ for building applications that use mjpegtools libraries.
 
 
 %prep 
-%setup -q -n %{name}-%{version}rc3
-find . -type d -name CVS -print0 | xargs -0 rm -rf
+%setup -q
 %patch0 -p1
 %patch1 -p1
 sed -i -e 's/ARCHFLAGS=.*/ARCHFLAGS=/' configure*
@@ -151,6 +150,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Wed Apr 15 2009 Hans de Goede <j.w.r.degoede@hhs.nl> 1.9.0-1
+- Update to upstream 1.9.0 final release
+
 * Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 1.9.0-0.7.rc3
 - rebuild for new F11 features
 
