@@ -1,0 +1,11 @@
+diff -up mjpegtools-1.9.0/lavtools/png2yuv.c~ mjpegtools-1.9.0/lavtools/png2yuv.c
+--- mjpegtools-1.9.0/lavtools/png2yuv.c~	2007-11-08 18:31:50.000000000 +0100
++++ mjpegtools-1.9.0/lavtools/png2yuv.c	2010-09-03 13:32:43.015596001 +0200
+@@ -407,6 +407,7 @@ int decode_png(const char *pngname, int 
+     return 2;
+     }
+ 
++  png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);
+   fclose(pngfile);
+ 
+   return 1;

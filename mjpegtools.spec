@@ -1,6 +1,6 @@
 Name:           mjpegtools
 Version:        1.9.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Tools to manipulate MPEG data
 
 Group:          Applications/Multimedia
@@ -9,6 +9,7 @@ URL:            http://mjpeg.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/mjpeg/%{name}-%{version}.tar.gz
 Patch0:         %{name}-1.9.0rc1-anytovcd-ffmpegver.patch
 Patch1:         mjpegtools-1.9.0-gcc44.patch
+Patch2:         mjpegtools-1.9.0-png-memleak.patch
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 BuildRequires:  libjpeg-devel
@@ -74,6 +75,7 @@ for building applications that use mjpegtools libraries.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 sed -i -e 's/ARCHFLAGS=.*/ARCHFLAGS=/' configure*
 sed -i -e 's|/lib /usr/lib|/%{_lib} %{_libdir}|' configure # lib64 rpaths
 for f in docs/yuvfps.1 ; do
@@ -150,6 +152,9 @@ rm -rf $RPM_BUILD_ROOT
 
 
 %changelog
+* Fri Sep  3 2010 Hans de Goede <j.w.r.degoede@hhs.nl> 1.9.0-2
+- Fix a memleak which is causing issues for LiVES
+
 * Wed Apr 15 2009 Hans de Goede <j.w.r.degoede@hhs.nl> 1.9.0-1
 - Update to upstream 1.9.0 final release
 
