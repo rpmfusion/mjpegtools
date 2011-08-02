@@ -1,17 +1,12 @@
 Name:           mjpegtools
-Version:        1.9.0
-Release:        2%{?dist}
+Version:        2.0.0
+Release:        1%{?dist}
 Summary:        Tools to manipulate MPEG data
-
 Group:          Applications/Multimedia
 License:        GPLv2
 URL:            http://mjpeg.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/mjpeg/%{name}-%{version}.tar.gz
-Patch0:         %{name}-1.9.0rc1-anytovcd-ffmpegver.patch
-Patch1:         mjpegtools-1.9.0-gcc44.patch
-Patch2:         mjpegtools-1.9.0-png-memleak.patch
-BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-
+Patch0:         mjpegtools-2.0.0-no-config-in-public-header.h
 BuildRequires:  libjpeg-devel
 BuildRequires:  nasm
 BuildRequires:  libdv-devel
@@ -21,6 +16,7 @@ BuildRequires:  libquicktime-devel >= 0.9.8
 BuildRequires:  libpng-devel
 BuildRequires:  gtk2-devel >= 2.4.0
 Requires:       %{name}-libs = %{version}-%{release}
+Requires:       %{name}-lav = %{version}-%{release}
 # mencoder for lav2avi.sh
 Requires:       mencoder
 # ffmpeg main package, y4mscaler and which for anytovcd.sh
@@ -36,6 +32,7 @@ and playback, simple cut-and-paste editing and the MPEG compression of
 audio and video under Linux.  This package contains mjpegtools console
 utilities.
 
+
 %package        gui
 Summary:        GUI tools to manipulate MPEG data
 Group:          Applications/Multimedia
@@ -47,22 +44,34 @@ and playback, simple cut-and-paste editing and the MPEG compression of
 audio and video under Linux.  This package contains mjpegtools GUI
 utilities.
 
+
 %package        libs
-Summary:        Libraries used by mjpegtools
+Summary:        MJPEGtools libraries
 Group:          System Environment/Libraries
-Requires:       libquicktime >= 0.9.8
 
 %description    libs
+The mjpeg programs are a set of tools that can do recording of videos
+and playback, simple cut-and-paste editing and the MPEG compression of
+audio and video under Linux.  This package contains libraries which are
+used by mjpegtools and also by several other projects.
+
+
+%package        lav
+Summary:        MJPEGtools lavpipe libraries
+Group:          System Environment/Libraries
+Requires:       %{name}-libs = %{version}-%{release}
+
+%description    lav
 The mjpeg programs are a set of tools that can do recording of videos
 and playback, simple cut-and-paste editing and the MPEG compression of
 audio and video under Linux.  This package contains libraries used by
 mjpegtools.
 
+
 %package        devel
 Summary:        Development files for mjpegtools libraries 
 Group:          Development/Libraries
 Requires:       %{name}-libs = %{version}-%{release}
-Requires:       pkgconfig
 
 %description    devel
 The mjpeg programs are a set of tools that can do recording of videos
@@ -71,11 +80,22 @@ audio and video under Linux.  This package contains development files
 for building applications that use mjpegtools libraries.
 
 
+%package        lav-devel
+Summary:        Development files for mjpegtools lavpipe libraries 
+Group:          Development/Libraries
+Requires:       %{name}-lav = %{version}-%{release}
+Requires:       %{name}-devel = %{version}-%{release}
+
+%description    lav-devel
+The mjpeg programs are a set of tools that can do recording of videos
+and playback, simple cut-and-paste editing and the MPEG compression of
+audio and video under Linux.  This package contains development files
+for building applications that use mjpegtools lavpipe libraries.
+
+
 %prep 
 %setup -q
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
 sed -i -e 's/ARCHFLAGS=.*/ARCHFLAGS=/' configure*
 sed -i -e 's|/lib /usr/lib|/%{_lib} %{_libdir}|' configure # lib64 rpaths
 for f in docs/yuvfps.1 ; do
@@ -85,24 +105,15 @@ done
 
 %build
 %configure --disable-dependency-tracking --disable-static
-make # %{?_smp_mflags}
+make %{?_smp_mflags}
 
 
 %install
-rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 rm -f $RPM_BUILD_ROOT{%{_infodir}/dir,%{_libdir}/lib*.la}
 # too broken/outdated to be useful in 1.[89].0 (and would come with dep chain)
-rm -f $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
+rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 
-
-%clean
-rm -rf $RPM_BUILD_ROOT
-
-
-%post libs -p /sbin/ldconfig
-
-%postun libs -p /sbin/ldconfig
 
 %post
 /sbin/install-info %{_infodir}/mjpeg-howto.info %{_infodir}/dir || :
@@ -111,10 +122,18 @@ rm -rf $RPM_BUILD_ROOT
 [ $1 -eq 0 ] && \
 /sbin/install-info --delete %{_infodir}/mjpeg-howto.info %{_infodir}/dir || :
 
+%post libs -p /sbin/ldconfig
+
+%postun libs -p /sbin/ldconfig
+
+%post lav -p /sbin/ldconfig
+
+%postun lav -p /sbin/ldconfig
+
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING CHANGES ChangeLog AUTHORS BUGS README.lavpipe NEWS TODO
+%doc CHANGES ChangeLog AUTHORS BUGS README.lavpipe NEWS TODO
 %{_bindir}/*
 %exclude %{_bindir}/glav
 %exclude %{_bindir}/lavplay
@@ -130,8 +149,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(-,root,root,-)
 %doc README.glav
 %{_bindir}/glav
-# lavplay and yuvplay won't save -libs/console util users from X11 and SDL
-# dependencies as long as liblavplay is in -libs, but they're inherently
+# lavplay and yuvplay won't save console util users from X11 and SDL
+# dependencies as long as liblavplay is in -lav, but they're inherently
 # GUI tools -> include them here
 %{_bindir}/lavplay
 %{_bindir}/y4mhist
@@ -142,16 +161,29 @@ rm -rf $RPM_BUILD_ROOT
 %files libs
 %defattr(-,root,root,-)
 %doc COPYING
-%{_libdir}/lib*.so.*
+%{_libdir}/libm*.so.*
+
+%files lav
+%defattr(-,root,root,-)
+%{_libdir}/liblav*.so.*
 
 %files devel
 %defattr(-,root,root,-)
 %{_includedir}/%{name}
-%{_libdir}/lib*.so
+%exclude %{_includedir}/%{name}/*lav*.h
+%{_libdir}/libm*.so
 %{_libdir}/pkgconfig/%{name}.pc
+
+%files lav-devel
+%defattr(-,root,root,-)
+%{_includedir}/%{name}/*lav*.h
+%{_libdir}/liblav*.so
 
 
 %changelog
+* Mon Aug  1 2011 Hans de Goede <j.w.r.degoede@gmail.com> - 2.0.0-1
+- Update to new upstream 2.0.0 final release
+
 * Fri Sep  3 2010 Hans de Goede <j.w.r.degoede@hhs.nl> 1.9.0-2
 - Fix a memleak which is causing issues for LiVES
 
