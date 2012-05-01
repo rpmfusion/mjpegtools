@@ -6,17 +6,20 @@ Group:          Applications/Multimedia
 License:        GPLv2
 URL:            http://mjpeg.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/mjpeg/%{name}-%{version}.tar.gz
+
 Patch0:         mjpegtools-2.0.0-no-config-in-public-header.h
+
 BuildRequires:  libjpeg-devel
 BuildRequires:  nasm
 BuildRequires:  libdv-devel
 BuildRequires:  SDL-devel >= 1.1.3
 BuildRequires:  SDL_gfx-devel
-BuildRequires:  libquicktime-devel >= 0.9.8
+#BuildRequires:  libquicktime-devel >= 0.9.8
 BuildRequires:  libpng-devel
 BuildRequires:  gtk2-devel >= 2.4.0
-Requires:       %{name}-libs = %{version}-%{release}
-Requires:       %{name}-lav = %{version}-%{release}
+
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
+Requires:       %{name}-lav%{?_isa} = %{version}-%{release}
 # mencoder for lav2avi.sh
 Requires:       mencoder
 # ffmpeg main package, y4mscaler and which for anytovcd.sh
@@ -36,7 +39,7 @@ utilities.
 %package        gui
 Summary:        GUI tools to manipulate MPEG data
 Group:          Applications/Multimedia
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description    gui
 The mjpeg programs are a set of tools that can do recording of videos
@@ -59,7 +62,7 @@ used by mjpegtools and also by several other projects.
 %package        lav
 Summary:        MJPEGtools lavpipe libraries
 Group:          System Environment/Libraries
-Requires:       %{name}-libs = %{version}-%{release}
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
 %description    lav
 The mjpeg programs are a set of tools that can do recording of videos
@@ -71,7 +74,7 @@ mjpegtools.
 %package        devel
 Summary:        Development files for mjpegtools libraries 
 Group:          Development/Libraries
-Requires:       %{name}-libs = %{version}-%{release}
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
 %description    devel
 The mjpeg programs are a set of tools that can do recording of videos
@@ -83,8 +86,8 @@ for building applications that use mjpegtools libraries.
 %package        lav-devel
 Summary:        Development files for mjpegtools lavpipe libraries 
 Group:          Development/Libraries
-Requires:       %{name}-lav = %{version}-%{release}
-Requires:       %{name}-devel = %{version}-%{release}
+Requires:       %{name}-lav%{?_isa} = %{version}-%{release}
+Requires:       %{name}-devel%{?_isa} = %{version}-%{release}
 
 %description    lav-devel
 The mjpeg programs are a set of tools that can do recording of videos
@@ -109,10 +112,10 @@ make %{?_smp_mflags}
 
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
-rm -f $RPM_BUILD_ROOT{%{_infodir}/dir,%{_libdir}/lib*.la}
+make install DESTDIR=%{buildroot}
+rm -f %{buildroot}{%{_infodir}/dir,%{_libdir}/lib*.la}
 # too broken/outdated to be useful in 1.[89].0 (and would come with dep chain)
-rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
+rm %{buildroot}%{_bindir}/mpegtranscode
 
 
 %post
@@ -123,16 +126,13 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 /sbin/install-info --delete %{_infodir}/mjpeg-howto.info %{_infodir}/dir || :
 
 %post libs -p /sbin/ldconfig
-
 %postun libs -p /sbin/ldconfig
 
 %post lav -p /sbin/ldconfig
-
 %postun lav -p /sbin/ldconfig
 
 
 %files
-%defattr(-,root,root,-)
 %doc CHANGES ChangeLog AUTHORS BUGS README.lavpipe NEWS TODO
 %{_bindir}/*
 %exclude %{_bindir}/glav
@@ -146,7 +146,6 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 %{_infodir}/mjpeg-howto.info*
 
 %files gui
-%defattr(-,root,root,-)
 %doc README.glav
 %{_bindir}/glav
 # lavplay and yuvplay won't save console util users from X11 and SDL
@@ -159,28 +158,27 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 %{_mandir}/man1/yuvplay.1*
 
 %files libs
-%defattr(-,root,root,-)
 %doc COPYING
 %{_libdir}/libm*.so.*
 
 %files lav
-%defattr(-,root,root,-)
 %{_libdir}/liblav*.so.*
 
 %files devel
-%defattr(-,root,root,-)
 %{_includedir}/%{name}
 %exclude %{_includedir}/%{name}/*lav*.h
 %{_libdir}/libm*.so
 %{_libdir}/pkgconfig/%{name}.pc
 
 %files lav-devel
-%defattr(-,root,root,-)
 %{_includedir}/%{name}/*lav*.h
 %{_libdir}/liblav*.so
 
 
 %changelog
+* Tue May 01 2012 Richard Shaw <hobbes1069@gmail.com> - 2.0.0-1
+- Inital release for EL6.
+
 * Mon Aug  1 2011 Hans de Goede <j.w.r.degoede@gmail.com> - 2.0.0-1
 - Update to new upstream 2.0.0 final release
 
