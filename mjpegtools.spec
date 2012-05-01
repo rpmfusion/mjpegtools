@@ -1,6 +1,6 @@
 Name:           mjpegtools
 Version:        2.0.0
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Tools to manipulate MPEG data
 Group:          Applications/Multimedia
 License:        GPLv2
@@ -176,7 +176,7 @@ rm %{buildroot}%{_bindir}/mpegtranscode
 
 
 %changelog
-* Tue May 01 2012 Richard Shaw <hobbes1069@gmail.com> - 2.0.0-1
+* Tue May 01 2012 Richard Shaw <hobbes1069@gmail.com> - 2.0.0-2
 - Inital release for EL6.
 
 * Mon Aug  1 2011 Hans de Goede <j.w.r.degoede@gmail.com> - 2.0.0-1
