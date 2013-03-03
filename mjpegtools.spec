@@ -1,6 +1,6 @@
 Name:           mjpegtools
 Version:        2.0.0
-Release:        5%{?dist}
+Release:        6%{?dist}
 Summary:        Tools to manipulate MPEG data
 Group:          Applications/Multimedia
 License:        GPLv2
@@ -183,6 +183,9 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 
 
 %changelog
+* Sun Mar 03 2013 Nicolas Chauvet <kwizart@gmail.com> - 2.0.0-6
+- Mass rebuilt for Fedora 19 Features
+
 * Tue Jun 26 2012 Nicolas Chauvet <kwizart@gmail.com> - 2.0.0-5
 - Rebuilt for FFmpeg
 
