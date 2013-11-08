@@ -1,13 +1,11 @@
 Name:           mjpegtools
-Version:        2.0.0
-Release:        9%{?dist}
+Version:        2.1.0
+Release:        1%{?dist}
 Summary:        Tools to manipulate MPEG data
 Group:          Applications/Multimedia
 License:        GPLv2
 URL:            http://mjpeg.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/mjpeg/%{name}-%{version}.tar.gz
-Patch0:         mjpegtools-2.0.0-no-config-in-public-header.h
-Patch1:         mjpegtools_gcc470.patch
 BuildRequires:  libjpeg-devel
 BuildRequires:  nasm
 BuildRequires:  libdv-devel
@@ -96,8 +94,6 @@ for building applications that use mjpegtools lavpipe libraries.
 
 %prep 
 %setup -q
-%patch0 -p1
-%patch1 -p1
 sed -i -e 's/ARCHFLAGS=.*/ARCHFLAGS=/' configure*
 sed -i -e 's|/lib /usr/lib|/%{_lib} %{_libdir}|' configure # lib64 rpaths
 for f in docs/yuvfps.1 ; do
@@ -183,6 +179,10 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 
 
 %changelog
+* Thu Nov 07 2013 Sérgio Basto <sergio@serjux.com> - 2.1.0-1
+- Update to 2.1.0
+- Drop upstreamed patches.
+
 * Wed Nov 06 2013 Sérgio Basto <sergio@serjux.com> - 2.0.0-9
 - Rebuilt for x264/FFmpeg
 
