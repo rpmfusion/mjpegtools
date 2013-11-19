@@ -1,6 +1,6 @@
 Name:           mjpegtools
 Version:        2.1.0
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Tools to manipulate MPEG data
 Group:          Applications/Multimedia
 License:        GPLv2
@@ -20,7 +20,9 @@ Requires:       %{name}-lav = %{version}-%{release}
 Requires:       mencoder
 # ffmpeg main package, y4mscaler and which for anytovcd.sh
 Requires:       ffmpeg
-Obsoletes:      y4mscaler
+Provides:       y4mscaler = 9.0-14
+# Could be dropped on Fedora 22
+Obsoletes:      y4mscaler < 9.0-14
 Requires:       which
 Requires(post): /sbin/install-info
 Requires(preun): /sbin/install-info
@@ -179,6 +181,9 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 
 
 %changelog
+* Tue Nov 19 2013 Sérgio Basto <sergio@serjux.com> - 2.1.0-3
+- Better obsoletes/provides for y4mscaler.
+
 * Tue Nov 19 2013 Sérgio Basto <sergio@serjux.com> - 2.1.0-2
 - Fix rfbz #3022, Obsoletes: y4mscaler, because already integrate into
   mjpegtools-2.1.0
