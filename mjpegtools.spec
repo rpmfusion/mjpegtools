@@ -1,6 +1,6 @@
 Name:           mjpegtools
 Version:        2.1.0
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Tools to manipulate MPEG data
 Group:          Applications/Multimedia
 License:        GPLv2
@@ -181,6 +181,9 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 
 
 %changelog
+* Sat Jul 26 2014 Sérgio Basto <sergio@serjux.com> - 2.1.0-4
+- Rebuild for new libSDL_gfx, need by mjpegtools-gui
+
 * Tue Nov 19 2013 Sérgio Basto <sergio@serjux.com> - 2.1.0-3
 - Better obsoletes/provides for y4mscaler.
 
