@@ -6,6 +6,10 @@ Group:          Applications/Multimedia
 License:        GPLv2
 URL:            http://mjpeg.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/mjpeg/%{name}-%{version}.tar.gz
+Patch0:         mjpegtools-2.1.0-sdl-cflags.patch
+Patch1:         mjpegtools-2.1.0-no_format.patch
+Patch2:         mjpegtools-2.1.0-pic.patch
+
 BuildRequires:  libjpeg-devel
 BuildRequires:  nasm
 BuildRequires:  libdv-devel
@@ -96,6 +100,10 @@ for building applications that use mjpegtools lavpipe libraries.
 
 %prep 
 %setup -q
+%patch0 -p1 -b .sdl
+%patch1 -p1 -b .format
+%patch2 -p0 -b .fpic
+
 sed -i -e 's/ARCHFLAGS=.*/ARCHFLAGS=/' configure*
 sed -i -e 's|/lib /usr/lib|/%{_lib} %{_libdir}|' configure # lib64 rpaths
 for f in docs/yuvfps.1 ; do
@@ -183,6 +191,10 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 %changelog
 * Sat Jul 26 2014 Sérgio Basto <sergio@serjux.com> - 2.1.0-4
 - Rebuild for new libSDL_gfx, need by mjpegtools-gui
+- Fix FTBFS for errors "format not a string literal and no format arguments" because 
+    FESCO decided Enable "-Werror=format-security" by default
+    https://fedorahosted.org/fesco/ticket/1185
+- Bring and add two patches from Gentoo: mjpegtools-2.1.0-pic.patch and mjpegtools-2.1.0-sdl-cflags.patch
 
 * Tue Nov 19 2013 Sérgio Basto <sergio@serjux.com> - 2.1.0-3
 - Better obsoletes/provides for y4mscaler.
