@@ -1,6 +1,6 @@
 Name:           mjpegtools
 Version:        2.1.0
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Tools to manipulate MPEG data
 Group:          Applications/Multimedia
 License:        GPLv2
@@ -189,6 +189,9 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 
 
 %changelog
+* Sun Oct 19 2014 Sérgio Basto <sergio@serjux.com> - 2.1.0-5
+- Rebuilt for FFmpeg 2.4.3
+
 * Sat Jul 26 2014 Sérgio Basto <sergio@serjux.com> - 2.1.0-4
 - Rebuild for new libSDL_gfx, need by mjpegtools-gui
 - Fix FTBFS for errors "format not a string literal and no format arguments" because 
