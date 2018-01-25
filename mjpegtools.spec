@@ -115,7 +115,12 @@ done
 
 
 %build
-%configure --disable-dependency-tracking --disable-static
+%configure LIBS="-lpthread" \
+ --disable-dependency-tracking \
+%ifarch ppc64
+ --enable-simd-accel=no \
+%endif
+ --disable-static
 %make_build
 
 
@@ -188,6 +193,7 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 %changelog
 * Thu Jan 25 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.1.0-8
 - Build without libquicktime for F28
+- Disable AltiVec for ppc64
 
 * Thu Aug 31 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 2.1.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
