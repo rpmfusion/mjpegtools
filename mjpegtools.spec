@@ -1,6 +1,6 @@
 Name:           mjpegtools
 Version:        2.1.0
-Release:        7%{?dist}
+Release:        8%{?dist}
 Summary:        Tools to manipulate MPEG data
 Group:          Applications/Multimedia
 License:        GPLv2
@@ -15,7 +15,10 @@ BuildRequires:  nasm
 BuildRequires:  libdv-devel
 BuildRequires:  SDL-devel >= 1.1.3
 BuildRequires:  SDL_gfx-devel
+# libquicktime is FTBFS in F28
+%if 0%{?fedora} <= 27
 BuildRequires:  libquicktime-devel >= 0.9.8
+%endif
 BuildRequires:  libpng-devel
 BuildRequires:  gtk2-devel >= 2.4.0
 Requires:       %{name}-libs = %{version}-%{release}
@@ -113,11 +116,11 @@ done
 
 %build
 %configure --disable-dependency-tracking --disable-static
-make %{?_smp_mflags}
+%make_build
 
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+%make_install
 rm -f $RPM_BUILD_ROOT{%{_infodir}/dir,%{_libdir}/lib*.la}
 # too broken/outdated to be useful in 1.[89].0 (and would come with dep chain)
 rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
@@ -140,7 +143,6 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 
 
 %files
-%defattr(-,root,root,-)
 %doc CHANGES ChangeLog AUTHORS BUGS README.lavpipe NEWS TODO
 %{_bindir}/*
 %exclude %{_bindir}/glav
@@ -154,7 +156,6 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 %{_infodir}/mjpeg-howto.info*
 
 %files gui
-%defattr(-,root,root,-)
 %doc README.glav
 %{_bindir}/glav
 # lavplay and yuvplay won't save console util users from X11 and SDL
@@ -167,28 +168,27 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 %{_mandir}/man1/yuvplay.1*
 
 %files libs
-%defattr(-,root,root,-)
-%doc COPYING
+%license COPYING
 %{_libdir}/libm*.so.*
 
 %files lav
-%defattr(-,root,root,-)
 %{_libdir}/liblav*.so.*
 
 %files devel
-%defattr(-,root,root,-)
 %{_includedir}/%{name}
 %exclude %{_includedir}/%{name}/*lav*.h
 %{_libdir}/libm*.so
 %{_libdir}/pkgconfig/%{name}.pc
 
 %files lav-devel
-%defattr(-,root,root,-)
 %{_includedir}/%{name}/*lav*.h
 %{_libdir}/liblav*.so
 
 
 %changelog
+* Thu Jan 25 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.1.0-8
+- Build without libquicktime for F28
+
 * Thu Aug 31 2017 RPM Fusion Release Engineering <kwizart@rpmfusion.org> - 2.1.0-7
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_27_Mass_Rebuild
 
