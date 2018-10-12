@@ -1,6 +1,6 @@
 Name:           mjpegtools
 Version:        2.1.0
-Release:        11%{?dist}
+Release:        12%{?dist}
 Summary:        Tools to manipulate MPEG data
 Group:          Applications/Multimedia
 License:        GPLv2
@@ -10,6 +10,7 @@ Patch0:         mjpegtools-2.1.0-sdl-cflags.patch
 Patch1:         mjpegtools-2.1.0-no_format.patch
 Patch2:         mjpegtools-2.1.0-pic.patch
 
+BuildRequires:  gcc-c++
 BuildRequires:  libjpeg-devel
 BuildRequires:  nasm
 BuildRequires:  libdv-devel
@@ -188,6 +189,9 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 
 
 %changelog
+* Fri Oct 12 2018 Sérgio Basto <sergio@serjux.com> - 2.1.0-12
+- Add BuildRequires: gcc-c++
+
 * Fri Oct 12 2018 Sérgio Basto <sergio@serjux.com> - 2.1.0-11
 - Build with libquicktime again
 
