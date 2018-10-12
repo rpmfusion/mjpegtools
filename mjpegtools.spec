@@ -18,8 +18,8 @@ BuildRequires:  SDL_gfx-devel
 BuildRequires:  libquicktime-devel >= 0.9.8
 BuildRequires:  libpng-devel
 BuildRequires:  gtk2-devel >= 2.4.0
-Requires:       %{name}-libs = %{version}-%{release}
-Requires:       %{name}-lav = %{version}-%{release}
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
+Requires:       %{name}-lav%{?_isa} = %{version}-%{release}
 # mencoder for lav2avi.sh
 Requires:       mencoder
 # ffmpeg main package, y4mscaler and which for anytovcd.sh
@@ -40,7 +40,7 @@ utilities.
 
 %package        gui
 Summary:        GUI tools to manipulate MPEG data
-Requires:       %{name} = %{version}-%{release}
+Requires:       %{name}%{?_isa} = %{version}-%{release}
 
 %description    gui
 The mjpeg programs are a set of tools that can do recording of videos
@@ -61,7 +61,7 @@ used by mjpegtools and also by several other projects.
 
 %package        lav
 Summary:        MJPEGtools lavpipe libraries
-Requires:       %{name}-libs = %{version}-%{release}
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
 %description    lav
 The mjpeg programs are a set of tools that can do recording of videos
@@ -72,7 +72,7 @@ mjpegtools.
 
 %package        devel
 Summary:        Development files for mjpegtools libraries 
-Requires:       %{name}-libs = %{version}-%{release}
+Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 
 %description    devel
 The mjpeg programs are a set of tools that can do recording of videos
@@ -83,8 +83,8 @@ for building applications that use mjpegtools libraries.
 
 %package        lav-devel
 Summary:        Development files for mjpegtools lavpipe libraries 
-Requires:       %{name}-lav = %{version}-%{release}
-Requires:       %{name}-devel = %{version}-%{release}
+Requires:       %{name}-lav%{?_isa} = %{version}-%{release}
+Requires:       %{name}-devel%{?_isa} = %{version}-%{release}
 
 %description    lav-devel
 The mjpeg programs are a set of tools that can do recording of videos
