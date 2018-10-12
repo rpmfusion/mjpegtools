@@ -118,9 +118,9 @@ done
 
 %install
 %make_install
-rm -f $RPM_BUILD_ROOT{%{_infodir}/dir,%{_libdir}/lib*.la}
+rm -f %buildroot{%{_infodir}/dir,%{_libdir}/lib*.la}
 # too broken/outdated to be useful in 1.[89].0 (and would come with dep chain)
-rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
+rm %buildroot%{_bindir}/mpegtranscode
 
 
 %post
@@ -130,13 +130,9 @@ rm $RPM_BUILD_ROOT%{_bindir}/mpegtranscode
 [ $1 -eq 0 ] && \
 /sbin/install-info --delete %{_infodir}/mjpeg-howto.info %{_infodir}/dir || :
 
-%post libs -p /sbin/ldconfig
+%ldconfig_scriptlets libs
 
-%postun libs -p /sbin/ldconfig
-
-%post lav -p /sbin/ldconfig
-
-%postun lav -p /sbin/ldconfig
+%ldconfig_scriptlets lav
 
 
 %files
