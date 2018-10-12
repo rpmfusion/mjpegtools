@@ -1,6 +1,6 @@
 Name:           mjpegtools
 Version:        2.1.0
-Release:        12%{?dist}
+Release:        13%{?dist}
 Summary:        Tools to manipulate MPEG data
 License:        GPLv2
 URL:            http://mjpeg.sourceforge.net/
@@ -179,6 +179,11 @@ rm %buildroot%{_bindir}/mpegtranscode
 
 
 %changelog
+* Fri Oct 12 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.1.0-13
+- Remove Group tag
+- Add missing isa on Requires
+- Update scriptlets and buildroot  macro
+
 * Fri Oct 12 2018 Sérgio Basto <sergio@serjux.com> - 2.1.0-12
 - Add BuildRequires: gcc-c++
 
