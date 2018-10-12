@@ -2,7 +2,6 @@ Name:           mjpegtools
 Version:        2.1.0
 Release:        12%{?dist}
 Summary:        Tools to manipulate MPEG data
-Group:          Applications/Multimedia
 License:        GPLv2
 URL:            http://mjpeg.sourceforge.net/
 Source0:        http://downloads.sourceforge.net/mjpeg/%{name}-%{version}.tar.gz
@@ -41,7 +40,6 @@ utilities.
 
 %package        gui
 Summary:        GUI tools to manipulate MPEG data
-Group:          Applications/Multimedia
 Requires:       %{name} = %{version}-%{release}
 
 %description    gui
@@ -53,7 +51,6 @@ utilities.
 
 %package        libs
 Summary:        MJPEGtools libraries
-Group:          System Environment/Libraries
 
 %description    libs
 The mjpeg programs are a set of tools that can do recording of videos
@@ -64,7 +61,6 @@ used by mjpegtools and also by several other projects.
 
 %package        lav
 Summary:        MJPEGtools lavpipe libraries
-Group:          System Environment/Libraries
 Requires:       %{name}-libs = %{version}-%{release}
 
 %description    lav
@@ -76,7 +72,6 @@ mjpegtools.
 
 %package        devel
 Summary:        Development files for mjpegtools libraries 
-Group:          Development/Libraries
 Requires:       %{name}-libs = %{version}-%{release}
 
 %description    devel
@@ -88,7 +83,6 @@ for building applications that use mjpegtools libraries.
 
 %package        lav-devel
 Summary:        Development files for mjpegtools lavpipe libraries 
-Group:          Development/Libraries
 Requires:       %{name}-lav = %{version}-%{release}
 Requires:       %{name}-devel = %{version}-%{release}
 
