@@ -1,6 +1,6 @@
 Name:           mjpegtools
 Version:        2.1.0
-Release:        13%{?dist}
+Release:        14%{?dist}
 Summary:        Tools to manipulate MPEG data
 License:        GPLv2
 URL:            http://mjpeg.sourceforge.net/
@@ -9,7 +9,8 @@ Patch0:         mjpegtools-2.1.0-sdl-cflags.patch
 Patch1:         mjpegtools-2.1.0-no_format.patch
 Patch2:         mjpegtools-2.1.0-pic.patch
 
-BuildRequires:  gcc-c++
+BuildRequires:  gcc-c++, gcc
+%{?el7:BuildRequires: epel-rpm-macros}
 BuildRequires:  libjpeg-devel
 BuildRequires:  nasm
 BuildRequires:  libdv-devel
@@ -21,15 +22,13 @@ BuildRequires:  gtk2-devel >= 2.4.0
 Requires:       %{name}-libs%{?_isa} = %{version}-%{release}
 Requires:       %{name}-lav%{?_isa} = %{version}-%{release}
 # mencoder for lav2avi.sh
-Requires:       mencoder
+Requires:       mencoder%{?_isa}
 # ffmpeg main package, y4mscaler and which for anytovcd.sh
-Requires:       ffmpeg
+Requires:       ffmpeg%{?_isa}
 Provides:       y4mscaler = 9.0-14
 # Could be dropped on Fedora 22
 Obsoletes:      y4mscaler < 9.0-14
 Requires:       which
-Requires(post): /sbin/install-info
-Requires(preun): /sbin/install-info
 
 %description
 The mjpeg programs are a set of tools that can do recording of videos
@@ -94,10 +93,7 @@ for building applications that use mjpegtools lavpipe libraries.
 
 
 %prep 
-%setup -q
-%patch0 -p1 -b .sdl
-%patch1 -p1 -b .format
-%patch2 -p0 -b .fpic
+%autosetup -p1
 
 sed -i -e 's/ARCHFLAGS=.*/ARCHFLAGS=/' configure*
 sed -i -e 's|/lib /usr/lib|/%{_lib} %{_libdir}|' configure # lib64 rpaths
@@ -121,14 +117,6 @@ done
 rm -f %buildroot{%{_infodir}/dir,%{_libdir}/lib*.la}
 # too broken/outdated to be useful in 1.[89].0 (and would come with dep chain)
 rm %buildroot%{_bindir}/mpegtranscode
-
-
-%post
-/sbin/install-info %{_infodir}/mjpeg-howto.info %{_infodir}/dir || :
-
-%preun
-[ $1 -eq 0 ] && \
-/sbin/install-info --delete %{_infodir}/mjpeg-howto.info %{_infodir}/dir || :
 
 %ldconfig_scriptlets libs
 
@@ -179,6 +167,10 @@ rm %buildroot%{_bindir}/mpegtranscode
 
 
 %changelog
+* Mon Nov 12 2018 Antonio Trande <sagitter@fedoraproject.org> - 2.1.0-14
+- Rebuild for ffmpeg-3.4.5 on el7
+- infodir scriptlets deprecated
+
 * Fri Oct 12 2018 Leigh Scott <leigh123linux@googlemail.com> - 2.1.0-13
 - Remove Group tag
 - Add missing isa on Requires
