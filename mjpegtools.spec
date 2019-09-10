@@ -1,6 +1,10 @@
+%if 0%{?el8}
+%global _without_sdlgfx 1
+%endif
+
 Name:           mjpegtools
 Version:        2.1.0
-Release:        16%{?dist}
+Release:        17%{?dist}
 Summary:        Tools to manipulate MPEG data
 License:        GPLv2
 URL:            http://mjpeg.sourceforge.net/
@@ -9,13 +13,12 @@ Patch0:         mjpegtools-2.1.0-sdl-cflags.patch
 Patch1:         mjpegtools-2.1.0-no_format.patch
 Patch2:         mjpegtools-2.1.0-pic.patch
 
-BuildRequires:  gcc-c++, gcc
-%{?el7:BuildRequires: epel-rpm-macros}
+BuildRequires:  gcc-c++
 BuildRequires:  libjpeg-devel
 BuildRequires:  nasm
 BuildRequires:  libdv-devel
 BuildRequires:  SDL-devel >= 1.1.3
-BuildRequires:  SDL_gfx-devel
+%{!?_without_sdlgfx:BuildRequires:  SDL_gfx-devel}
 BuildRequires:  libquicktime-devel >= 0.9.8
 BuildRequires:  libpng-devel
 BuildRequires:  gtk2-devel >= 2.4.0
@@ -108,6 +111,7 @@ done
 %ifarch ppc64
  --enable-simd-accel=no \
 %endif
+%{?_without_sdlgfx:  --without-sdlgfx} \
  --disable-static
 %make_build
 
@@ -167,6 +171,10 @@ rm %buildroot%{_bindir}/mpegtranscode
 
 
 %changelog
+* Tue Sep 10 2019 Xavier Bachelot <xavier@bachelot.org> - 2.1.0-17
+- Disable use of SDL_gfx on EL8.
+- Minor spec cleanup.
+
 * Fri Aug 09 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 2.1.0-16
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
