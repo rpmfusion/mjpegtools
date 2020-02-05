@@ -4,7 +4,7 @@
 
 Name:           mjpegtools
 Version:        2.1.0
-Release:        17%{?dist}
+Release:        18%{?dist}
 Summary:        Tools to manipulate MPEG data
 License:        GPLv2
 URL:            http://mjpeg.sourceforge.net/
@@ -171,6 +171,9 @@ rm %buildroot%{_bindir}/mpegtranscode
 
 
 %changelog
+* Wed Feb 05 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 2.1.0-18
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
+
 * Tue Sep 10 2019 Xavier Bachelot <xavier@bachelot.org> - 2.1.0-17
 - Disable use of SDL_gfx on EL8.
 - Minor spec cleanup.
