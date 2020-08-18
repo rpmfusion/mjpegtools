@@ -13,8 +13,10 @@ Patch0:         mjpegtools-2.1.0-sdl-cflags.patch
 Patch1:         mjpegtools-2.1.0-no_format.patch
 Patch2:         mjpegtools-2.1.0-pic.patch
 
+BuildRequires:  automake
 BuildRequires:  gcc-c++
 BuildRequires:  libjpeg-devel
+BuildRequires:  libtool
 BuildRequires:  nasm
 BuildRequires:  libdv-devel
 BuildRequires:  SDL-devel >= 1.1.3
@@ -97,7 +99,7 @@ for building applications that use mjpegtools lavpipe libraries.
 
 %prep 
 %autosetup -p1
-
+autoreconf -iv
 sed -i -e 's/ARCHFLAGS=.*/ARCHFLAGS=/' configure*
 sed -i -e 's|/lib /usr/lib|/%{_lib} %{_libdir}|' configure # lib64 rpaths
 for f in docs/yuvfps.1 ; do
