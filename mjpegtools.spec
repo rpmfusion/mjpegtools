@@ -4,7 +4,7 @@
 
 Name:           mjpegtools
 Version:        2.1.0
-Release:        20%{?dist}
+Release:        21%{?dist}
 Summary:        Tools to manipulate MPEG data
 License:        GPLv2
 URL:            http://mjpeg.sourceforge.net/
@@ -173,6 +173,9 @@ rm %buildroot%{_bindir}/mpegtranscode
 
 
 %changelog
+* Wed Feb 03 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 2.1.0-21
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
+
 * Tue Aug 18 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 2.1.0-20
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
 
