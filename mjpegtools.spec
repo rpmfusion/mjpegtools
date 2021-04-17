@@ -3,15 +3,12 @@
 %endif
 
 Name:           mjpegtools
-Version:        2.1.0
-Release:        21%{?dist}
+Version:        2.2.0
+Release:        1%{?dist}
 Summary:        Tools to manipulate MPEG data
 License:        GPLv2
-URL:            http://mjpeg.sourceforge.net/
-Source0:        http://downloads.sourceforge.net/mjpeg/%{name}-%{version}.tar.gz
-Patch0:         mjpegtools-2.1.0-sdl-cflags.patch
-Patch1:         mjpegtools-2.1.0-no_format.patch
-Patch2:         mjpegtools-2.1.0-pic.patch
+URL:            https://mjpeg.sourceforge.net/
+Source0:        https://sourceforge.net/projects/mjpeg/files/%{name}/%{version}/%{name}-%{version}.tar.bz2
 
 BuildRequires:  automake
 BuildRequires:  gcc-c++
@@ -99,7 +96,7 @@ for building applications that use mjpegtools lavpipe libraries.
 
 %prep 
 %autosetup -p1
-autoreconf -iv
+
 sed -i -e 's/ARCHFLAGS=.*/ARCHFLAGS=/' configure*
 sed -i -e 's|/lib /usr/lib|/%{_lib} %{_libdir}|' configure # lib64 rpaths
 for f in docs/yuvfps.1 ; do
@@ -143,7 +140,6 @@ rm %buildroot%{_bindir}/mpegtranscode
 %{_infodir}/mjpeg-howto.info*
 
 %files gui
-%doc README.glav
 %{_bindir}/glav
 # lavplay and yuvplay won't save console util users from X11 and SDL
 # dependencies as long as liblavplay is in -lav, but they're inherently
@@ -173,6 +169,9 @@ rm %buildroot%{_bindir}/mpegtranscode
 
 
 %changelog
+* Sat Apr 17 2021 Leigh Scott <leigh123linux@gmail.com> - 2.2.0-1
+- Update to 2.2.0
+
 * Wed Feb 03 2021 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 2.1.0-21
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_34_Mass_Rebuild
 
