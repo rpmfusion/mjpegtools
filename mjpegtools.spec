@@ -7,7 +7,7 @@ Version:        2.2.1
 Release:        1%{?dist}
 Summary:        Tools to manipulate MPEG data
 License:        GPLv2
-URL:            https://mjpeg.sourceforge.net/
+URL:            https://mjpeg.sourceforge.io/
 Source0:        https://downloads.sourceforge.net/mjpeg/%{name}/%{version}/%{name}-%{version}.tar.gz
 
 BuildRequires:  automake
