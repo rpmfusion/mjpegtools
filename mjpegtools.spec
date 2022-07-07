@@ -1,4 +1,4 @@
-%if 0%{?el8}
+%if 0%{?rhel} >= 8
 %global _without_sdlgfx 1
 %endif
 
