@@ -1,5 +1,6 @@
 %if 0%{?rhel} >= 8
 %global _without_sdlgfx 1
+%global _without_libdv  1
 %endif
 
 Name:           mjpegtools
@@ -16,7 +17,7 @@ BuildRequires:  gcc-c++
 BuildRequires:  libjpeg-devel
 BuildRequires:  libtool
 BuildRequires:  nasm
-BuildRequires:  libdv-devel
+%{!?_without_libdv:BuildRequires: libdv-devel}
 BuildRequires:  SDL-devel >= 1.1.3
 %{!?_without_sdlgfx:BuildRequires:  SDL_gfx-devel}
 BuildRequires:  libquicktime-devel >= 0.9.8
@@ -122,9 +123,6 @@ rm -f %buildroot{%{_infodir}/dir,%{_libdir}/lib*.la}
 # too broken/outdated to be useful in 1.[89].0 (and would come with dep chain)
 rm %buildroot%{_bindir}/mpegtranscode
 
-%ldconfig_scriptlets libs
-
-%ldconfig_scriptlets lav
 
 
 %files
